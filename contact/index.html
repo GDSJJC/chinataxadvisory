@@ -32,17 +32,19 @@
 </div>
 <div class="form-card">
 <h3 style="margin-top:0">Send a note</h3>
-<!-- STATIC FORM: replace action with your Formspree endpoint. Free tier suffices. Example: https://formspree.io/f/xxxxxx -->
+<!-- FORMSPREE: create free form at formspree.io (use info@chinataxadvisory.com as recipient), then replace YOUR_FORM_ID below with the real id, e.g. https://formspree.io/f/maylxxxx -->
 <form action="https://formspree.io/f/YOUR_FORM_ID" method="POST">
+<input type="hidden" name="_subject" value="New inquiry — chinataxadvisory.com">
+<input type="text" name="_gotcha" style="display:none" tabindex="-1" autocomplete="off">
 <label for="name">Name</label>
 <input id="name" name="name" required autocomplete="name">
 <label for="email">Email</label>
-<input id="email" name="email" type="email" required autocomplete="email">
+<input id="email" name="_replyto" type="email" required autocomplete="email" placeholder="you@company.com">
 <label for="topic">Topic</label>
 <input id="topic" name="topic" placeholder="Audit / transfer pricing / VAT / investment…">
 <label for="msg">Message</label>
 <textarea id="msg" name="message" rows="6" required placeholder="Brief facts and what you need…"></textarea>
-<p class="hint">Static-safe. No server to maintain. Get your free ID at formspree.io and paste it above.</p>
+<p class="hint">We reply within 1 business day. Prefer email? Write to info@chinataxadvisory.com.</p>
 <button class="btn btn-navy" type="submit">Send</button>
 </form>
 </div>
