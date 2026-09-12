@@ -18,7 +18,8 @@ Stack: **plain HTML + CSS + JS, no framework, no build step**. Deploy: **GitHub 
 ## Architecture / conventions
 
 - Clean-URL folders: `about/index.html` → `/about/`, `client-cases/index.html` → `/client-cases/`, `contact/index.html` → `/contact/`, `blog/<slug>/index.html` → `/blog/<slug>/`. Homepage `index.html` doubles as Insights listing (matches Squarespace where `/` is the blog list).
-- Shared: `css/style.css` (tokens: navy #0f2340, gold #c5a880/#a9885e; fonts Alice + Almarai via Google Fonts), `js/main.js` (mobile nav only).
+- Shared: `css/style.css` (tokens: navy #0f2340, gold #c5a880/#a9885e; fonts Cormorant Garamond + Source Sans 3 via Google Fonts), `js/main.js` (mobile nav + credentials lightbox).
+- Rollback of the 2026-09-13 visual redesign: git tag `pre-redesign-2026-09-13` and branch `archive/pre-redesign-2026-09-13` (commit `a78b381`). Restore with `git switch archive/pre-redesign-2026-09-13`, or put the old site back on `main` with `git reset --hard pre-redesign-2026-09-13` then push. Do not push a reset until the owner confirms.
 - Config: `wrangler.jsonc` (name chinataxadvisory, assets.directory ".", not_found_handling "404-page"), `_redirects` (old Squarespace hash slug → clean slug + .html aliases), `sitemap.xml`, `robots.txt`, `blog/rss.xml`, `404.html`, `.gitignore` (excludes `.git/`, `.wrangler/`, `Web Dev.txt`).
 - `Web Dev.txt` (568 lines, prior hosting/AI-model analysis) is **intentionally untracked** — never commit it.
 - Images: office→`/images/office.png`, cases→`/images/credentials/case-01..21.jpg` (from OIG1..21). Portrait `/images/about.jpg` (from AZ.jpg) **removed Sept 2026** for firm-first branding — do not re-add personal photos. Blog heroes still remote Unsplash-via-Squarespace CDN — localize on next pass if desired.

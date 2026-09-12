@@ -14,7 +14,7 @@ You have 2 ways. AI-assisted is fastest and recommended.
 2. The AI will:
    - create `blog/<slug>/index.html` (copy of existing article template, keeping the unified footer Disclaimer word-for-word),
    - use byline `China Tax Advisory` (never a personal name),
-   - add a card to the top of `index.html` → Latest insights,
+   - add the new post to the top of `index.html` Insights (featured slot for the newest; previous featured moves into the list),
    - add the URL to `sitemap.xml` and an `<item>` to `blog/rss.xml`,
    - commit + push → Cloudflare auto-deploys in ~1 min.
 3. Check `https://www.chinataxadvisory.com/blog/<slug>/` and the homepage card.
@@ -30,7 +30,7 @@ Body:
 ---
 [paste]
 ---
-Update homepage Latest insights (newest first, keep 5 posts + 1 contact CTA card),
+Update homepage Insights (newest first as the featured item; keep 5 posts),
 sitemap.xml, blog/rss.xml. Byline is always "China Tax Advisory". Keep the
 footer Disclaimer identical on the new page. Commit and push.
 ```
@@ -39,7 +39,7 @@ footer Disclaimer identical on the new page. Commit and push.
 
 1. Copy an existing post folder, e.g. `blog/china-2025-encouraged-catalogue-tax-incentives/` → `blog/<new-slug>/`.
 2. Open `blog/<new-slug>/index.html`, replace `<title>`, `<h1>`, date/category line, `.standfirst`, and body sections. Keep header/footer/nav identical (same Disclaimer text). Set the byline to `China Tax Advisory`.
-3. Homepage `index.html`: duplicate one `<article class="card">`, put newest first, update image (reuse an existing Unsplash URL or add `/images/<new>.jpg`), title, excerpt, link.
+3. Homepage `index.html`: put the newest post in `.insight-feature` (image, title, excerpt, link). Move the previous featured item to the top of `.insight-list` as an `.insight-row`. Keep five posts total.
 4. `sitemap.xml`: duplicate a `<url>` block with the new loc.
 5. `blog/rss.xml`: duplicate an `<item>` block (title/link/pubDate).
 6. Commit + push:
