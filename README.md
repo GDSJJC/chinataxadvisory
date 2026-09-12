@@ -34,7 +34,7 @@ Stack: **plain HTML + CSS + JS, no framework, no build step**. Deploy: **GitHub 
 
 ## What is left / TODO for future AI
 
-- [x] **Contact form**: `contact/index.html` uses **FormSubmit** (`https://formsubmit.co/info@chinataxadvisory.com`, no account; Formspree signup was blocked in China by reCAPTCHA CSP). First submit triggers one activation mail to info@ — click Activate once. MailerLite was considered and rejected for contact (it subscribes inquirers to audience; keep MailerLite only if newsletter returns).
+- [x] **Contact form**: `contact/index.html` uses **FormSubmit** (`https://formsubmit.co/info@chinataxadvisory.com`, no account; Formspree signup was blocked in China by reCAPTCHA CSP). First submit triggers one activation mail to info@ — click Activate once. After submit, `_next` sends the visitor to `/contact/thank-you/` (do not leave them on FormSubmit’s generic thanks page). `_autoresponse` sends a short confirmation to the inquirer. MailerLite was considered and rejected for contact (it subscribes inquirers to audience; keep MailerLite only if newsletter returns).
 - [x] **Go-live (Sept 2026)**: domain onboarded to Cloudflare (Free), Squarespace A/CNAME records deleted, nameservers switched Squarespace Domains → Cloudflare, `www` added as Workers custom domain. Canonicals/sitemap/RSS already pointed at `www.chinataxadvisory.com` — no code change needed.
 - [ ] Visual QA on live `www` URL (desktop/tablet/phone); owner gives fix list.
 - [ ] Optional: localize 5 blog hero images to `/images/`; add favicon polish; verify OG tags; add apex→www redirect if desired (only `www` is connected today).
