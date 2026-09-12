@@ -13,7 +13,7 @@ Stack: **plain HTML + CSS + JS, no framework, no build step**. Deploy: **GitHub 
 - Originals: `C:\Users\Huang\Desktop\Futong\Squarespace\` — Credentials/OIG1-21, Photo 2025/AZ.jpg + Office.png, Logo & Banner/
 - GitHub: `https://github.com/GDSJJC/chinataxadvisory` (user GDSJJC, email abe.zhao@outlook.com), branch `main`
 - Preview: `https://chinataxadvisory.abe-zhao.workers.dev` (production branch `main`)
-- Live (old): Squarespace at `www.chinataxadvisory.com` via Zoho domain — **DO NOT TOUCH Squarespace, its content, or Zoho DNS**. Only read public pages. Squarespace subscription runs to Jan (next year); DNS move is a January-only decision by owner.
+- Live: `https://www.chinataxadvisory.com` via Cloudflare Workers custom domain (DNS moved from Squarespace Domains to Cloudflare, Sept 2026). Domain registration stays at Squarespace Domains (renewal Jan 2027) — cancel the Squarespace **Website** only, never the domain.
 
 ## Architecture / conventions
 
@@ -21,28 +21,31 @@ Stack: **plain HTML + CSS + JS, no framework, no build step**. Deploy: **GitHub 
 - Shared: `css/style.css` (tokens: navy #0f2340, gold #c5a880/#a9885e; fonts Alice + Almarai via Google Fonts), `js/main.js` (mobile nav only).
 - Config: `wrangler.jsonc` (name chinataxadvisory, assets.directory ".", not_found_handling "404-page"), `_redirects` (old Squarespace hash slug → clean slug + .html aliases), `sitemap.xml`, `robots.txt`, `blog/rss.xml`, `404.html`, `.gitignore` (excludes `.git/`, `.wrangler/`, `Web Dev.txt`).
 - `Web Dev.txt` (568 lines, prior hosting/AI-model analysis) is **intentionally untracked** — never commit it.
-- Images: about→`/images/about.jpg` (from AZ.jpg), office→`/images/office.png`, cases→`/images/credentials/case-01..21.jpg` (from OIG1..21). Blog heroes still remote Unsplash-via-Squarespace CDN — localize on next pass if desired.
+- Images: office→`/images/office.png`, cases→`/images/credentials/case-01..21.jpg` (from OIG1..21). Portrait `/images/about.jpg` (from AZ.jpg) **removed Sept 2026** for firm-first branding — do not re-add personal photos. Blog heroes still remote Unsplash-via-Squarespace CDN — localize on next pass if desired.
 
 ## What was done (2026-09-07)
 
-1. Audited public site: nav About/Insights(`/`)/Credentials(`/client-cases`, 21 text-in-image cases, zero captions)/Contact (Office.png + Formspree-needed form + info@chinataxadvisory.com); 5 posts migrated full-text (condensed faithfully).
-2. Built premium refresh (not pixel-match): bigger 30px two-tone brand (navy + bronze-gold, intentional), hero + 5 cards + about teaser + credentials teaser + contact CTA.
-3. Decisions applied: credentials keep image grid uncropped (`height:auto; object-fit:contain` — never crop or text is lost); free form services; premium refresh; newsletter removed (replaced with contact CTA card); contact has compact bio + link to full `/about/` (no URL merge, 4 nav items kept for SEO).
+1. Audited public site: nav About/Insights(`/`)/Credentials(`/client-cases`, 21 text-in-image cases, zero captions)/Contact (Office.png + form + info@chinataxadvisory.com); 5 posts migrated full-text (condensed faithfully).
+2. Built premium refresh (not pixel-match): 30px two-tone brand (navy + bronze-gold, intentional — do not enlarge), hero + 5 cards + about teaser + credentials teaser + contact CTA.
+3. Decisions applied: credentials keep image grid uncropped (`height:auto; object-fit:contain` — never crop or text is lost); free form services; premium refresh; newsletter removed (replaced with contact CTA card); firm-first branding, no personal names/photos, bylines read "China Tax Advisory".
 4. GitHub + Cloudflare wired: empty repo → commit 16 files → push → Connect GitHub (note: user first authorized All repos; tightened to Only `chinataxadvisory` via github.com/settings/installations) → Create application → Framework Static, no build cmd, output `/` → Build #f2f3c529 Success.
 5. Fixes pushed: brand 22→30px, credentials uncropped, `.git/` excluded from deploy, 404-page handling, newsletter removal, contact bio, image localization.
 
 ## What is left / TODO for future AI
 
-- [ ] **Formspree wiring**: `contact/index.html` has `https://formspree.io/f/YOUR_FORM_ID` + `_subject`/`_replyto`/`_gotcha`. Owner creates free form at formspree.io (recipient info@chinataxadvisory.com), pastes real id — one-line edit, commit, push. MailerLite was considered and rejected for contact (it subscribes inquirers to audience; keep MailerLite only if newsletter returns).
-- [ ] Visual QA on preview (desktop/tablet/phone) vs old site; owner gives fix list.
-- [ ] Optional: localize 5 blog hero images to `/images/`; add favicon polish; verify OG tags.
-- [ ] Blog workflow: see `HOW-TO-POST-A-BLOG.md` (AI prompt template + manual steps + LinkedIn blurb template + RSS→Buffer semi-auto option). Keep `sitemap.xml` + `blog/rss.xml` in sync on every post.
-- [ ] **January only**: if owner approves, move Zoho DNS to Cloudflare + set custom domain + update canonicals/sitemap/RSS from `workers.dev` to `www.chinataxadvisory.com`. Do not do earlier.
+- [x] **Contact form**: `contact/index.html` uses **FormSubmit** (`https://formsubmit.co/info@chinataxadvisory.com`, no account; Formspree signup was blocked in China by reCAPTCHA CSP). First submit triggers one activation mail to info@ — click Activate once. MailerLite was considered and rejected for contact (it subscribes inquirers to audience; keep MailerLite only if newsletter returns).
+- [x] **Go-live (Sept 2026)**: domain onboarded to Cloudflare (Free), Squarespace A/CNAME records deleted, nameservers switched Squarespace Domains → Cloudflare, `www` added as Workers custom domain. Canonicals/sitemap/RSS already pointed at `www.chinataxadvisory.com` — no code change needed.
+- [ ] Visual QA on live `www` URL (desktop/tablet/phone); owner gives fix list.
+- [ ] Optional: localize 5 blog hero images to `/images/`; add favicon polish; verify OG tags; add apex→www redirect if desired (only `www` is connected today).
+- [ ] Blog workflow: see `HOW-TO-POST-A-BLOG.md` (AI prompt template + manual steps + LinkedIn blurb template + RSS→Buffer semi-auto option). Keep `sitemap.xml` + `blog/rss.xml` in sync on every post. New posts use byline "China Tax Advisory", unified footer Disclaimer (see Rules).
 
 ## Rules for future edits
 
-- Never log into, edit, or break Squarespace/Zoho. New site runs in parallel until owner says cut over.
+- Domain registration stays at Squarespace Domains (do not transfer/cancel before Jan 2027 renewal). Squarespace Website may be cancelled now that Cloudflare is live. Never delete Zoho MX/TXT mail records in Cloudflare DNS.
 - Never crop credential images. Keep `height:auto`.
+- Firm-first voice everywhere: no personal names or portraits; blog bylines read "China Tax Advisory".
+- Footer is unified: heading `Disclaimer`, text `Insights on this site are for general information only and do not constitute professional advice. Tax law and enforcement practice change — please seek tailored advice before acting.`, fine line `© <year> China Tax Advisory · All rights reserved · RSS`. Keep identical on every page.
+- Brand wordmark stays 30px desktop (24px mobile); do not enlarge.
 - Keep stack dependency-free. No React/Next, no DB, no server.
-- Every push to `main` auto-deploys — verify at the workers.dev URL after ~1 min.
+- Every push to `main` auto-deploys — verify at `https://www.chinataxadvisory.com` after ~1 min (workers.dev preview works too).
 - Commit messages short; include updated `sitemap.xml`/`rss.xml` when adding posts.
