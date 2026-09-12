@@ -2,6 +2,8 @@
 
 You have 2 ways. AI-assisted is fastest and recommended.
 
+Read `README.md` first (voice, footer Disclaimer, fonts, no personal bylines).
+
 ## Option A — AI-assisted (recommended, 5 min)
 
 1. In this repo folder, tell the AI (Spark or any coding AI):
@@ -12,12 +14,12 @@ You have 2 ways. AI-assisted is fastest and recommended.
    > Body: [paste full text, Markdown or Word is fine]
    > Slug: [short-lowercase-with-dashes, e.g. sta-clarifies-xy-rule]"
 2. The AI will:
-   - create `blog/<slug>/index.html` (copy of existing article template, keeping the unified footer Disclaimer word-for-word),
+   - create `blog/<slug>/index.html` (copy of an existing article template — current fonts, skip link, header/nav, unified footer Disclaimer word-for-word),
    - use byline `China Tax Advisory` (never a personal name),
-   - add the new post to the top of `index.html` Insights (featured slot for the newest; previous featured moves into the list),
+   - put the new post in the homepage featured slot (`.insight-feature`); move the previous featured item to the top of `.insight-list` as an `.insight-row`,
    - add the URL to `sitemap.xml` and an `<item>` to `blog/rss.xml`,
    - commit + push → Cloudflare auto-deploys in ~1 min.
-3. Check `https://www.chinataxadvisory.com/blog/<slug>/` and the homepage card.
+3. Check `https://www.chinataxadvisory.com/blog/<slug>/` and the homepage featured item.
 
 Prompt template you can reuse:
 ```
@@ -30,17 +32,21 @@ Body:
 ---
 [paste]
 ---
-Update homepage Insights (newest first as the featured item; keep 5 posts),
-sitemap.xml, blog/rss.xml. Byline is always "China Tax Advisory". Keep the
-footer Disclaimer identical on the new page. Commit and push.
+Update homepage Insights (newest first as .insight-feature; previous featured
+becomes the first .insight-row; keep 5 posts). Update sitemap.xml and
+blog/rss.xml. Byline is always "China Tax Advisory". Copy header/footer/fonts
+from an existing post. Keep the footer Disclaimer identical. Commit and push.
 ```
 
 ## Option B — Manual (no AI)
 
-1. Copy an existing post folder, e.g. `blog/china-2025-encouraged-catalogue-tax-incentives/` → `blog/<new-slug>/`.
-2. Open `blog/<new-slug>/index.html`, replace `<title>`, `<h1>`, date/category line, `.standfirst`, and body sections. Keep header/footer/nav identical (same Disclaimer text). Set the byline to `China Tax Advisory`.
-3. Homepage `index.html`: put the newest post in `.insight-feature` (image, title, excerpt, link). Move the previous featured item to the top of `.insight-list` as an `.insight-row`. Keep five posts total.
-4. `sitemap.xml`: duplicate a `<url>` block with the new loc.
+1. Copy an existing post folder, e.g. `blog/china-2025-encouraged-catalogue-tax-incentives/` → `blog/<new-slug>/`. Do not start from an old snapshot — the live template uses Cormorant Garamond + Source Sans 3, a skip link, and the unified footer (tagline + Disclaimer).
+2. Open `blog/<new-slug>/index.html`, replace `<title>`, canonical, `<h1>`, date/category line, `.standfirst`, and body sections. Keep header/footer/nav identical (same Disclaimer text). Set the byline to `China Tax Advisory`.
+3. Homepage `index.html`:
+   - Move the current `.insight-feature` block into `.insight-list` as a new first `.insight-row` (date, title link, one-line excerpt — no image required on rows).
+   - Put the newest post in `.insight-feature` (image if you have one, title, excerpt, “Read analysis” link).
+   - Keep five posts total. Do not add a sixth “contact” card.
+4. `sitemap.xml`: duplicate a `<url>` block with the new loc. Do not add `/contact/thank-you/`.
 5. `blog/rss.xml`: duplicate an `<item>` block (title/link/pubDate).
 6. Commit + push:
    ```
@@ -48,12 +54,13 @@ footer Disclaimer identical on the new page. Commit and push.
    git commit -m "New insight: <title>"
    git push origin main
    ```
-7. Wait 1 min, verify preview URL.
+7. Wait 1 min, verify `https://www.chinataxadvisory.com/blog/<slug>/` and the homepage.
 
 ## Images for new posts
 
 - Put new files in `images/` (e.g. `images/my-topic.jpg`), reference as `/images/my-topic.jpg`.
 - Blog hero images currently reuse remote Unsplash-via-Squarespace URLs — OK short-term. For longevity, save the image locally under `images/`.
+- Homepage: only the featured post shows a large image. List rows are typographic.
 
 ## LinkedIn — blurb + link (manual recommended)
 
