@@ -52,9 +52,9 @@ repo's `tools/publish-insight.py`, which:
 
 - creates `blog/<slug>/index.html` from the live template (header, fonts,
   footer Disclaimer byte-identical),
-- moves the current homepage featured post to the top row, puts the new
-  post in the featured slot, keeps 5 posts,
-- appends `sitemap.xml` and prepends `blog/rss.xml`,
+- moves the current homepage featured post into the full Insights archive
+  (featured + year-grouped rows, newest first — all posts are kept),
+- appends `sitemap.xml` and prepends `blog/rss.xml` (newest first),
 - repairs the prev/next chain (existing labels preserved),
 - prints + saves a LinkedIn kit next to the package file.
 
@@ -72,8 +72,8 @@ ready yet, the command stops with instructions; bypass only with
 
 1. Open `blog/<slug>/index.html` in a browser: title, date/category line,
    standfirst, sections, prev/next links, footer Disclaimer identical.
-2. Open `index.html`: new featured on top, previous featured as first row,
-   5 posts total.
+2. Open `index.html`: new featured on top, previous featured filed into
+   the archive list under its year group, all rows newest-first.
 3. Commit and push (auto-deploys in ~1 min via Cloudflare):
 
 ```

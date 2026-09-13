@@ -14,7 +14,8 @@ alert to website to LinkedIn.
    `python .\orchestrator.py publish-web --alert-id <alert-id>`
    (or from here: `python tools\publish-insight.py --package <pkg> --article <html>`).
 4. Verify locally, commit + push (`blog/<slug>`, `index.html`, `sitemap.xml`,
-   `blog/rss.xml`, hero). Cloudflare deploys in ~1 min.
+   `blog/rss.xml`, hero). The previous featured post is filed into the
+   year-grouped archive automatically. Cloudflare deploys in ~1 min.
 5. Post the generated LinkedIn kit manually (attach the hero file).
 
 Full steps, verification checklist, and rules: `POSTING_GUIDE.md`.

@@ -160,6 +160,7 @@ img{max-width:100%;height:auto;display:block}
 .insight-feature h2 a:hover{color:var(--navy-2)}
 .insight-feature p{margin:0 0 1em;color:var(--muted)}
 .insight-list{display:grid;grid-template-columns:1fr 1fr;gap:0 40px;margin-top:8px}
+.insight-list .archive-year{grid-column:1/-1;margin:26px 0 0}
 .insight-row{
   padding:28px 0;
   border-bottom:1px solid var(--line);

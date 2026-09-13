@@ -32,7 +32,7 @@ Positioning: a high-end boutique China tax advisory practice. The site should fe
 
 | URL | File | Notes |
 |---|---|---|
-| `/` | `index.html` | Insights. Featured post (`.insight-feature`) + four rows (`.insight-list` / `.insight-row`). Not a card grid. |
+| `/` | `index.html` | Insights. Featured post (`.insight-feature`) + full archive (`.insight-list` rows grouped by `.archive-year`). Never trim rows. |
 | `/about/` | `about/index.html` | Firm page. H1 is a statement, **not** the words “China Tax Advisory” (that already sits in the wordmark). |
 | `/client-cases/` | `client-cases/index.html` | Credentials. 21 case **images** in a 2-col grid; click opens lightbox. |
 | `/contact/` | `contact/index.html` | FormSubmit form + office photograph. |
@@ -90,5 +90,5 @@ Rollback of the pre-redesign site: git tag `pre-redesign-2026-09-13` and branch 
 - Thank-you page stays `noindex`, out of the sitemap, out of primary nav. FormSubmit’s own thanks page is generic — do not send visitors there.
 
 **Insights**
-- Newest post is `.insight-feature` on the homepage; the previous featured item moves to the top of `.insight-list` as an `.insight-row`. Keep five posts. Do not add a dummy contact card to fill a grid.
+- Newest post is `.insight-feature` on the homepage; the previous featured item is filed into the `.insight-list` archive under its year group (`.archive-year`). Keep every post. Do not add a dummy contact card to fill a grid.
 - Full posting steps: `POSTING_GUIDE.md`. Hero images: `tools/IMAGE_GUIDE.md`. Categories: reuse an existing site category (see homepage `.meta` lines); do not invent new labels without owner approval.

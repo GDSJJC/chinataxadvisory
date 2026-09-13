@@ -180,8 +180,13 @@ def update_homepage(homepage_html: str, pkg: dict, hero_src: str | None) -> str:
     old_title = field(r"<h2><a .*?>(.*?)</a></h2>")
     old_meta = field(r'<div class="meta">(.*?)</div>')
     old_excerpt = field(r"</h2>\s*<p>(.*?)</p>")
-    old_meta_text = re.sub(r"<.*?>", "", old_meta).replace("\u00b7", "|")
-    parts = [p.strip() for p in old_meta_text.split("|")]
+    old_meta_text = re.sub(r"<.*?>", "", old_meta).strip()
+    if "\u00b7" in old_meta_text:
+        parts = [p.strip() for p in old_meta_text.split("\u00b7")]
+    else:
+        # Homepage dots are CSS-generated (::before), so demoted metas read
+        # as "Date  Category" with a double space where the dot renders.
+        parts = [p.strip() for p in re.split(r"\s{2,}", old_meta_text)]
     old_date = parts[0] if parts else ""
     old_cat = parts[1] if len(parts) > 1 else ""
     demoted_row = (
@@ -213,6 +218,47 @@ def update_homepage(homepage_html: str, pkg: dict, hero_src: str | None) -> str:
     marker = '<div class="insight-list">'
     if marker not in out:
         raise PublishError("Homepage insight-list block not found")
+    if '<p class="eyebrow archive-year">' in out:
+        # Full-archive homepage: file the demoted post into its year group,
+        # newest-first by date. All rows are kept (no trimming).
+        try:
+            demoted_date = datetime.strptime(old_date, "%b %d, %Y")
+        except ValueError:
+            raise PublishError(f"Cannot parse demoted post date: {old_date!r}")
+        year = str(demoted_date.year)
+        label = f'<p class="eyebrow archive-year">{year}</p>'
+        if label not in out:
+            raise PublishError(f"Homepage has no archive group for {year}")
+        seg_start = out.index(label) + len(label)
+        next_label = out.find('<p class="eyebrow archive-year">', seg_start)
+        if next_label != -1:
+            seg_end = next_label
+        else:
+            tail = re.search(r'</article>\s*</div>\s*</div>\s*</section>', out[seg_start:])
+            if not tail:
+                raise PublishError("Homepage insight-list closing not found")
+            seg_end = seg_start + tail.start() + len('</article>')
+        segment = out[seg_start:seg_end]
+        row_pat = re.compile(
+            r'(?s)<article class="insight-row">\s*<div class="meta">(.*?)</div>.*?</article>')
+        insert_at = None
+        for rm in row_pat.finditer(segment):
+            metatext = re.sub(r"<.*?>", "", rm.group(1)).strip()
+            if "\u00b7" in metatext:
+                rdate_txt = metatext.split("\u00b7")[0].strip()
+            else:
+                rdate_txt = re.split(r"\s{2,}", metatext)[0].strip()
+            try:
+                rdate = datetime.strptime(rdate_txt, "%b %d, %Y")
+            except ValueError:
+                continue
+            if demoted_date >= rdate:
+                insert_at = rm.start()
+                break
+        if insert_at is None:
+            insert_at = len(segment)
+        out = out[:seg_start] + segment[:insert_at] + demoted_row + "\n" + segment[insert_at:] + out[seg_end:]
+        return out
     out = out.replace(marker, marker + "\n" + demoted_row, 1)
     rows = re.findall(r'(?s)<article class="insight-row">.*?</article>', out)
     if len(rows) > 4:
@@ -323,11 +369,16 @@ def main(argv: list[str] | None = None) -> int:
             "</urlset>",
             f"<url><loc>{SITE}/blog/{slug}/</loc><changefreq>yearly</changefreq><priority>0.9</priority></url>\n</urlset>",
         )
-        rss_new = read_text(RSS).replace(
-            "</channel>",
-            f"<item><title>{html.escape(pkg['title'].strip())}</title>"
+        rss_txt = read_text(RSS)
+        anchor = "</description>"
+        if anchor not in rss_txt:
+            raise PublishError("blog/rss.xml has no channel description; refusing to publish")
+        rss_new = rss_txt.replace(
+            anchor,
+            anchor + f"\n<item><title>{html.escape(pkg['title'].strip())}</title>"
             f"<link>{SITE}/blog/{slug}/</link>"
-            f"<pubDate>{rfc822_gmt(pkg['publish_date'])}</pubDate></item>\n</channel>",
+            f"<pubDate>{rfc822_gmt(pkg['publish_date'])}</pubDate></item>",
+            1,
         )
         kit = linkedin_kit(pkg, slug)
         if args.dry_run:

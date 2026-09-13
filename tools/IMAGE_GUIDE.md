@@ -8,7 +8,10 @@ proxy, or page-builder asset host. The last remote hero
 ## Where images live
 
 - Heroes: `/images/<slug>.jpg` (e.g. `/images/sta-clarifies-xy-rule.jpg`) —
-  public by design (homepage featured slot).
+  public by design (homepage featured slot). Since Sept 2026 the site uses
+  one shared hero, `/images/insight-hero.jpg`, for the featured slot and
+  all posts; add a per-post hero only if the owner asks for a distinct
+  featured image.
 - License proof lives shielded from the public web at
   `/tools/licenses/<slug>.source.txt` (one line: source URL + license +
   date). The `/tools/*` shield rule keeps it off the site; never store it
