@@ -1,81 +1,58 @@
-# How to post a new blog (static site, no Squarespace)
+# How to post a new blog (independent static site)
 
-You have 2 ways. AI-assisted is fastest and recommended.
+Read `README.md` first (voice, footer Disclaimer, fonts, no personal bylines),
+then follow **`POSTING_GUIDE.md`** — it covers the whole pipeline from tax
+alert to website to LinkedIn.
 
-Read `README.md` first (voice, footer Disclaimer, fonts, no personal bylines).
+## Recommended path (from a reviewed tax alert, ~10 min + image)
 
-## Option A — AI-assisted (recommended, 5 min)
+1. Finish the alert to `final_ready` in the China Tax Alert workstation
+   (Model Two `approve`/`approve_with_changes`, with `web-package.json` +
+   `web-article.html`).
+2. Save the hero per `tools/IMAGE_GUIDE.md` as `images/<slug>.jpg`.
+3. Stage the post with one command (from the China Tax Alert folder):
+   `python .\orchestrator.py publish-web --alert-id <alert-id>`
+   (or from here: `python tools\publish-insight.py --package <pkg> --article <html>`).
+4. Verify locally, commit + push (`blog/<slug>`, `index.html`, `sitemap.xml`,
+   `blog/rss.xml`, hero). Cloudflare deploys in ~1 min.
+5. Post the generated LinkedIn kit manually (attach the hero file).
 
-1. In this repo folder, tell the AI (Spark or any coding AI):
-   > "Here's my new article. Add it to my website.
-   > Title: [paste title]
-   > Date: [e.g. 2026-10-15]
-   > Category: [e.g. Transfer pricing / VAT / Treaty / FDI]
-   > Body: [paste full text, Markdown or Word is fine]
-   > Slug: [short-lowercase-with-dashes, e.g. sta-clarifies-xy-rule]"
-2. The AI will:
-   - create `blog/<slug>/index.html` (copy of an existing article template — current fonts, skip link, header/nav, unified footer Disclaimer word-for-word),
-   - use byline `China Tax Advisory` (never a personal name),
-   - put the new post in the homepage featured slot (`.insight-feature`); move the previous featured item to the top of `.insight-list` as an `.insight-row`,
-   - add the URL to `sitemap.xml` and an `<item>` to `blog/rss.xml`,
-   - commit + push → Cloudflare auto-deploys in ~1 min.
-3. Check `https://www.chinataxadvisory.com/blog/<slug>/` and the homepage featured item.
+Full steps, verification checklist, and rules: `POSTING_GUIDE.md`.
 
-Prompt template you can reuse:
-```
-Add this as a new Insight post.
-Title: ...
-Date: ...
-Category: ...
-Slug: ...
-Body:
----
-[paste]
----
-Update homepage Insights (newest first as .insight-feature; previous featured
-becomes the first .insight-row; keep 5 posts). Update sitemap.xml and
-blog/rss.xml. Byline is always "China Tax Advisory". Copy header/footer/fonts
-from an existing post. Keep the footer Disclaimer identical. Commit and push.
-```
+## Standalone path (no tax-alert package, AI-assisted)
 
-## Option B — Manual (no AI)
+Tell the AI in this repo folder:
 
-1. Copy an existing post folder, e.g. `blog/china-2025-encouraged-catalogue-tax-incentives/` → `blog/<new-slug>/`. Do not start from an old snapshot — the live template uses Cormorant Garamond + Source Sans 3, a skip link, and the unified footer (tagline + Disclaimer).
-2. Open `blog/<new-slug>/index.html`, replace `<title>`, canonical, `<h1>`, date/category line, `.standfirst`, and body sections. Keep header/footer/nav identical (same Disclaimer text). Set the byline to `China Tax Advisory`.
-3. Homepage `index.html`:
-   - Move the current `.insight-feature` block into `.insight-list` as a new first `.insight-row` (date, title link, one-line excerpt — no image required on rows).
-   - Put the newest post in `.insight-feature` (image if you have one, title, excerpt, “Read analysis” link).
-   - Keep five posts total. Do not add a sixth “contact” card.
-4. `sitemap.xml`: duplicate a `<url>` block with the new loc. Do not add `/contact/thank-you/`.
-5. `blog/rss.xml`: duplicate an `<item>` block (title/link/pubDate).
-6. Commit + push:
-   ```
-   git add blog/<new-slug> index.html sitemap.xml blog/rss.xml
-   git commit -m "New insight: <title>"
-   git push origin main
-   ```
-7. Wait 1 min, verify `https://www.chinataxadvisory.com/blog/<slug>/` and the homepage.
+> "Add this as a new Insight post. Title: [...] Date: [e.g. 2026-10-15]
+> Category: [reuse an existing site category] Slug: [short-lowercase]
+> Body: [paste full text] Hero: [images/<slug>.jpg or 'find one per
+> tools/IMAGE_GUIDE.md'].
+> Use tools/publish-insight.py (build a web-package.json + web-article.html
+> first, then run it). No design changes — copy header/footer/fonts verbatim,
+> byline 'China Tax Advisory', unified footer Disclaimer. Commit and push."
 
-## Images for new posts
+The AI must use the script, not hand-edit the homepage chain, sitemap, or RSS.
 
-- Put new files in `images/` (e.g. `images/my-topic.jpg`), reference as `/images/my-topic.jpg`.
-- Blog hero images currently reuse remote Unsplash-via-Squarespace URLs — OK short-term. For longevity, save the image locally under `images/`.
-- Homepage: only the featured post shows a large image. List rows are typographic.
+## Manual fallback (no AI)
 
-## LinkedIn — blurb + link (manual recommended)
+1. Build `web-package.json` + `web-article.html` by hand (schema and fragment
+   rules are documented in `POSTING_GUIDE.md` step 1).
+2. Run `python tools\publish-insight.py --package <pkg> --article <html> --dry-run`,
+   review, then rerun without `--dry-run`.
+3. Verify, commit, push as above.
 
-There is **no free fully-automatic** static-site → LinkedIn-personal-profile sync (LinkedIn restricts personal API posting; company pages allow more).
+Do not hand-edit `index.html` rows, `sitemap.xml`, `blog/rss.xml`, or prev/next
+links — the script keeps them consistent.
 
-Recommended: 60-second manual post with this template:
-```
-[Hook — 1 line outcome, e.g. "RMB 24M assessed on a RMB 240M offshore sale."]
-[1-2 lines: what rule, why it matters.]
-Full analysis: https://www.chinataxadvisory.com/blog/<slug>/
-#ChinaTax #TransferPricing (pick 3 max)
-```
-Tips: first 2 lines show before "see more" — put the hook there. Paste link at end (LinkedIn unfurls the card from our OG tags). Post within 24h of publishing for best reach.
+## Images
 
-Semi-auto option (if you post often):
-- **RSS → Buffer/Typefully → LinkedIn**: connect `https://www.chinataxadvisory.com/blog/rss.xml` to Buffer/Make/Zapier → draft LinkedIn post on new RSS item → you approve with one click. Free tiers cover ~5 posts/mo.
-- **Zapier/Make RSS → LinkedIn Company Page** can auto-post, but Personal profiles usually require manual approval step. Do not grant LinkedIn credentials to unreliable tools.
-- Until volume justifies it, manual is faster and higher quality (you tailor the hook).
+Local files only: image at `images/<slug>.jpg`, license note shielded at
+`tools/licenses/<slug>.source.txt`. Never hotlink any CDN. How to find a
+proper one: `tools/IMAGE_GUIDE.md`. Homepage shows an image for the featured
+post only; list rows are typographic.
+
+## LinkedIn
+
+Manual 60-second post from the generated `linkedin-<slug>.txt` kit (hook + 2
+lines + link + ≤3 hashtags, hero attached). Details and the semi-auto RSS →
+Buffer/Typefully option: `POSTING_GUIDE.md` step 4.

@@ -8,3 +8,16 @@
 /blog/exchange-of-information-exposes-a-hidden-related-party-relationship-behind-a-loss-making-contract-manufacturer /blog/exchange-of-information-exposes-hidden-related-party/ 301
 /blog/china-sets-the-mechanics-for-long-term-asset-input-vat-asset-restructuring-relief-mixed-sales-and-the-time-of-supply /blog/china-vat-mechanics-long-term-assets-restructuring/ 301
 /blog/chinas-2025-encouraged-foreign-investment-catalogue-widens-the-gateway-to-tax-and-customs-incentives /blog/china-2025-encouraged-catalogue-tax-incentives/ 301
+
+# Shield beneath-surface files: repo internals must never be served.
+# Workers Static Assets permits redirect codes only (no true 404 rewrites),
+# so internals 302 to the 404 page: content is never served. 302 (not 301)
+# is deliberate so a reverted rule does not stick in browsers. Static rules
+# first, the single splat rule last. `_redirects` and `_headers` themselves
+# are consumed at deploy time and never served.
+/README.md /404.html 302
+/HOW-TO-POST-A-BLOG.md /404.html 302
+/POSTING_GUIDE.md /404.html 302
+/wrangler.jsonc /404.html 302
+/.gitignore /404.html 302
+/tools/* /404.html 302

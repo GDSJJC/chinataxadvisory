@@ -1,0 +1,16 @@
+# Insurance layer for beneath-surface files. Redirects in `_redirects` win over
+# headers, so while the shield rules are active these headers never fire; they
+# exist so a removed or mistyped redirect can never leave an internal file
+# indexed. `_headers` itself is consumed at deploy time and never served.
+/tools/*
+  X-Robots-Tag: noindex, nofollow
+/README.md
+  X-Robots-Tag: noindex, nofollow
+/HOW-TO-POST-A-BLOG.md
+  X-Robots-Tag: noindex, nofollow
+/POSTING_GUIDE.md
+  X-Robots-Tag: noindex, nofollow
+/wrangler.jsonc
+  X-Robots-Tag: noindex, nofollow
+/.gitignore
+  X-Robots-Tag: noindex, nofollow
