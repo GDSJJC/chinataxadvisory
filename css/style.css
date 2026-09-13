@@ -282,7 +282,7 @@ img{max-width:100%;height:auto;display:block}
   padding:2px 0 2px 1.15em;
   margin:18px 0 28px;
 }
-.article h2{font-size:1.45rem;margin-top:2.1em}
+.article h2{font-size:1.45rem;margin-top:2.1em;color:var(--gold-2)}
 .article p{margin:0 0 1em}
 .article ul{padding-left:1.1em}
 .article li{margin-bottom:8px}
