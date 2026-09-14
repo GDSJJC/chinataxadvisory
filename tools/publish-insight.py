@@ -43,8 +43,8 @@ RSS = BLOG_DIR / "rss.xml"
 SITE = "https://www.chinataxadvisory.com"
 DISCLAIMER = (
     "Insights on this site are for general information only and do not "
-    "constitute professional advice. Tax law and enforcement practice change "
-    "\u2014 please seek tailored advice before acting."
+    "constitute professional advice. Tax law and enforcement practice evolve. "
+    "Please seek tailored advice before acting."
 )
 FONTS_HREF = (
     "https://fonts.googleapis.com/css2?"
