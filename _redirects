@@ -21,3 +21,4 @@
 /wrangler.jsonc /404.html 302
 /.gitignore /404.html 302
 /tools/* /404.html 302
+/scheduled/* /404.html 302

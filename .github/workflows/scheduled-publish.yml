@@ -1,0 +1,45 @@
+name: Scheduled publish
+
+on:
+  schedule:
+    - cron: "0 22 * * *" # 06:00 Beijing daily
+  workflow_dispatch:
+    inputs:
+      today:
+        description: "Override today (YYYY-MM-DD, Shanghai) for testing"
+        required: false
+        default: ""
+
+permissions:
+  contents: write
+
+concurrency:
+  group: scheduled-publish
+  cancel-in-progress: false
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+      - name: Publish due scheduled posts
+        run: |
+          if [ -n "${{ inputs.today }}" ]; then
+            python tools/publish-scheduled.py --today "${{ inputs.today }}"
+          else
+            python tools/publish-scheduled.py
+          fi
+      - name: Commit and push if changed
+        run: |
+          git config user.name "github-actions"
+          git config user.email "github-actions@github.com"
+          git add -A
+          if git diff --cached --quiet; then
+            echo "Nothing to publish."
+          else
+            git commit -m "Scheduled publish: release due insights"
+            git push
+          fi

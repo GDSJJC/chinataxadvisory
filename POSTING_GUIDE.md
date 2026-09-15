@@ -103,6 +103,19 @@ Higher volume option: connect `https://www.chinataxadvisory.com/blog/rss.xml`
 to Buffer/Typefully/Make/Zapier to draft posts on each new RSS item, then
 approve with one click. Do not grant LinkedIn credentials to unreliable tools.
 
+## Scheduling (future-dated posts, 1/month)
+
+1. Queue: `python tools\schedule-insight.py --package <pkg> --article <html> --release-date YYYY-MM-DD`
+   (`publish_date` in the package must equal the release date; hero must
+   already exist under `images/`; validates via `--dry-run` first).
+2. The draft waits under `scheduled/<date>-<slug>/` (see
+   `scheduled/README.md` + `manifest.json` + `LOG.md`). Shielded from the
+   public web like `tools/`.
+3. Release: daily Action (22:00 UTC = 06:00 Beijing) runs
+   `tools/publish-scheduled.py`, publishes due items, removes their folders,
+   marks `live`, appends the log, and pushes (Cloudflare deploys in ~1 min).
+   Manual test: `python tools\publish-scheduled.py --today YYYY-MM-DD --dry-run`.
+
 ## Rules that always apply
 
 - Design freeze: never edit `css/`, `js/`, header/nav/footer markup, fonts,

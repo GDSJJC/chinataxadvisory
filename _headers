@@ -4,6 +4,8 @@
 # indexed. `_headers` itself is consumed at deploy time and never served.
 /tools/*
   X-Robots-Tag: noindex, nofollow
+/scheduled/*
+  X-Robots-Tag: noindex, nofollow
 /README.md
   X-Robots-Tag: noindex, nofollow
 /HOW-TO-POST-A-BLOG.md

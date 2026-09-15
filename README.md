@@ -63,7 +63,7 @@ Rollback of the pre-redesign site: git tag `pre-redesign-2026-09-13` and branch 
 
 - **Design freeze**: no changes to `css/`, `js/`, layout, fonts, header/nav/footer markup, or the Disclaimer wording without the owner's explicit approval. Adapt post content to the template, never the reverse.
 - **Independence**: no remote page-builder, CDN, or image-proxy dependencies. All assets are local files in this repo. Do not reintroduce Squarespace (or any builder) URLs, embeds, or hotlinks.
-- **Shielding**: nothing beneath the surface is public. `tools/`, guides, `wrangler.jsonc`, `.gitignore` 302 to the 404 page via `_redirects` (+ noindex insurance in `_headers`). Never link to them from any page, never store public-bound files under `tools/`, and never remove a shield rule without owner approval.
+- **Shielding**: nothing beneath the surface is public. `tools/`, `scheduled/`, guides, `wrangler.jsonc`, `.gitignore` 302 to the 404 page via `_redirects` (+ noindex insurance in `_headers`). Never link to them from any page, never store public-bound files under `tools/`, and never remove a shield rule without owner approval.
 - Registration vendor holds the domain name only (do not transfer/cancel before Jan 2027 renewal). Never delete Zoho MX/TXT mail records in Cloudflare DNS.
 - Keep stack dependency-free. No React/Next, no DB, no server.
 - Every push to `main` auto-deploys — verify at `https://www.chinataxadvisory.com` after ~1 min (workers.dev preview works too).
